@@ -38,7 +38,10 @@ class PaperCanvas extends React.Component {
         // Make layers.
         setupLayers();
         if (this.props.svg) {
-            this.importSvg(this.props.svg, this.props.rotationCenterX, this.props.rotationCenterY);
+            this.importSvg(
+                this.props.svg,
+                this.props.rotationCenterX, this.props.rotationCenterY,
+                this.props.viewOffsetX, this.props.viewOffsetY);
         } else {
             performSnapshot(this.props.undoSnapshot);
         }
@@ -59,7 +62,10 @@ class PaperCanvas extends React.Component {
             const oldZoom = paper.project.view.zoom;
             const oldCenter = paper.project.view.center.clone();
             resetZoom();
-            this.importSvg(newProps.svg, newProps.rotationCenterX, newProps.rotationCenterY);
+            this.importSvg(
+                newProps.svg,
+                newProps.rotationCenterX, newProps.rotationCenterY,
+                newProps.viewOffsetX, newProps.viewOffsetY);
             paper.project.view.zoom = oldZoom;
             paper.project.view.center = oldCenter;
             paper.project.view.update();
@@ -81,7 +87,7 @@ class PaperCanvas extends React.Component {
             }
         }
     }
-    importSvg (svg, rotationCenterX, rotationCenterY) {
+    importSvg (svg, rotationCenterX, rotationCenterY, viewOffsetX, viewOffsetY) {
         const paperCanvas = this;
         // Pre-process SVG to prevent parsing errors (discussion from #213)
         // 1. Remove newlines and tab characters, chrome will not load urls with them.
@@ -131,8 +137,8 @@ class PaperCanvas extends React.Component {
                 if (typeof rotationCenterX !== 'undefined' && typeof rotationCenterY !== 'undefined') {
                     item.position =
                         paper.project.view.center
-                            .add(itemWidth / 2, itemHeight / 2)
-                            .subtract(rotationCenterX, rotationCenterY);
+                            //.add(itemWidth / 2, itemHeight / 2)
+                            .subtract(rotationCenterX - viewOffsetX, rotationCenterY - viewOffsetY);
                 } else {
                     // Center
                     item.position = paper.project.view.center;
@@ -195,7 +201,9 @@ PaperCanvas.propTypes = {
     setSelectedItems: PropTypes.func.isRequired,
     svg: PropTypes.string,
     svgId: PropTypes.string,
-    undoSnapshot: PropTypes.func.isRequired
+    undoSnapshot: PropTypes.func.isRequired,
+    viewOffsetX: PropTypes.number,
+    viewOffsetY: PropTypes.number
 };
 const mapStateToProps = state => ({
     mode: state.scratchPaint.mode

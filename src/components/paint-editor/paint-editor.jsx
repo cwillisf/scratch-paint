@@ -376,6 +376,8 @@ const PaintEditorComponent = props => {
                         rotationCenterY={props.rotationCenterY}
                         svg={props.svg}
                         svgId={props.svgId}
+                        viewOffsetX={props.viewOffsetX}
+                        viewOffsetY={props.viewOffsetY}
                         onUpdateSvg={props.onUpdateSvg}
                     />
                     {props.isEyeDropping &&
@@ -470,6 +472,8 @@ PaintEditorComponent.propTypes = {
     onZoomReset: PropTypes.func.isRequired,
     rotationCenterX: PropTypes.number,
     rotationCenterY: PropTypes.number,
+    viewOffsetX: PropTypes.number,
+    viewOffsetY: PropTypes.number,
     setCanvas: PropTypes.func.isRequired,
     svg: PropTypes.string,
     svgId: PropTypes.string

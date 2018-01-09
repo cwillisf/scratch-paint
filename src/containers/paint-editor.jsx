@@ -169,7 +169,7 @@ class PaintEditor extends React.Component {
         // canvas, and should therefore stop the eye dropper
         document.addEventListener('mousedown', this.onMouseDown);
         document.addEventListener('touchstart', this.onMouseDown);
-        
+
         this.intervalId = setInterval(() => {
             const colorInfo = this.eyeDropper.getColorInfo(
                 this.eyeDropper.pickX,
@@ -206,6 +206,8 @@ class PaintEditor extends React.Component {
                 setCanvas={this.setCanvas}
                 svg={this.props.svg}
                 svgId={this.props.svgId}
+                viewOffsetX={this.props.viewOffsetX}
+                viewOffsetY={this.props.viewOffsetY}
                 onGroup={this.handleGroup}
                 onRedo={this.handleRedo}
                 onSendBackward={this.handleSendBackward}
@@ -248,7 +250,9 @@ PaintEditor.propTypes = {
     undoState: PropTypes.shape({
         stack: PropTypes.arrayOf(PropTypes.object).isRequired,
         pointer: PropTypes.number.isRequired
-    })
+    }),
+    viewOffsetX: PropTypes.number,
+    viewOffsetY: PropTypes.number
 };
 
 const mapStateToProps = state => ({
